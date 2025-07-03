@@ -10,6 +10,7 @@ import { MdOutlineWorkHistory } from "react-icons/md";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { FaUser } from "react-icons/fa";
+import { GrMoney } from "react-icons/gr";
 
 // type Props = {};
 
@@ -25,6 +26,21 @@ const SlidebarManagement = () => {
   // );
   const isOpen = useSelector((state: RootState) => state.status_tab_menu);
   const itemsMenu = [
+    {
+      key: "asset",
+      label: (
+        <Link
+          href="/asset"
+          className=""
+          onClick={() => {
+            if (isMobile) dispatch(toggleMenu());
+          }}
+        >
+          <span>Quản lý tài sản</span>
+        </Link>
+      ),
+      icon: <GrMoney />,
+    },
     {
       key: "work",
       label: "Công việc",
