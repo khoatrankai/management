@@ -15,16 +15,20 @@ import { useDispatch } from "react-redux";
 import { MdDeleteForever } from "react-icons/md";
 // import useCheckRole from "@/utils/CheckRole";
 import { useSearchParams } from "next/navigation";
+import { GetAsset } from "@/models/productInterface.js";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store/store";
 import { fetchAssets } from "@/redux/store/slices/productSlices/get_asset.slice";
 import ModalUpdateAsset from "../ToolAsset/ModalAsset/ModalUpdateAsset";
-import { GetAsset } from "@/models/productInterface";
-import useCheckRole from "@/utils/CheckRole";
+import HistoryAsset from "../HistoryAsset/HistoryAsset";
 
 export default function ListAsset() {
   const [pageLimit, setPageLimit] = useState<number>(25);
-  const isAuthorized = useCheckRole(["admin-top", "product","product-read"]);
+  const [idModal,setIdModal] = useState<string>()
+  const handleCancel = ()=>{
+    setIdModal(undefined)
+  }
+  // const isAuthorized = useCheckRole(["admin-top", "product"]);
   // const [filterData, setFilterData] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
   // const { postdata } = usePostData();
@@ -42,19 +46,19 @@ export default function ListAsset() {
       <div className="flex flex-col gap-1">
         <strong>{value.slice(0, 10)}...</strong>
         <div className="flex gap-2">
-                    {isAuthorized && (
+                    {/* {isAuthorized && ( */}
                       <>
                         <ModalUpdateAsset asset_id={record.id} />
                       </>
-                    )}
-                    {/* <Button
+                    {/* )} */}
+                    <Button
           type="link"
           onClick={() => {
-            window.location.href = `/assets/detail/${value}`;
+            setIdModal(record.id)
           }}
         >
-          Xem
-        </Button> */}
+          Lịch sử
+        </Button>
                   </div>
         
       </div>
@@ -260,6 +264,7 @@ export default function ListAsset() {
       >
         Bạn có chắc chắn muốn xóa không ?
       </Modal>
+      <HistoryAsset id={idModal as string} handleCancel={handleCancel}/>
     </div>
   );
 }
